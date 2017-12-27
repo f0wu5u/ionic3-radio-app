@@ -1,0 +1,48 @@
+<!--
+  Generated template for the GenreBrowserPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header [ngStyle]="setStreamMetaImage(_meta?.LargeImage)">
+
+  <ion-toolbar color="danger" transparent>
+    <ion-buttons left>
+      <button ion-button icon-only (tap)="goBack()">
+        <ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
+      </button>
+    </ion-buttons><ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="heart-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+    
+  </ion-toolbar>
+  <div class="header-content">
+    <h2 class="genre-title">181.FM - {{_genre.getName()}}</h2>
+    <ng-container *ngIf="(_activeStation !== null && _genre.hasStation(_activeStation))">
+      <span class="genre-meta">{{_activeStation.getName()}}</span>
+    </ng-container>
+    <ng-container *ngIf="_meta != null">
+      <div class="player">
+        <span>Now playing | </span>
+        <span class="meta">{{_meta.song}}<br>{{_meta?.Title}}</span>
+      </div>
+    </ng-container>
+  </div>
+  <ion-item-divider fixed color="danger">{{_genre.getStationsCount()}} Stations</ion-item-divider>  
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ng-container *ngFor="let station of _stations">
+      <ion-item (tap)="streamStation(station)">
+        <ion-thumbnail item-start>
+          <img src="assets/imgs/181-thumbnail.png">
+        </ion-thumbnail>
+        {{station.name}}
+        <ion-icon [color]="isSelectedStation(station.id) ? 'danger' : 'dark'" [name]="_streamPaused == false && isSelectedStation(station.id) ? 'pause': 'play'" item-end></ion-icon>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-buttons start>
+      <button ion-button icon-only>
+        <!-- <ion-icon name="menu"></ion-icon> -->
+        <ion-icon name="headset"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      181.FM - Genre
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only>
+          <ion-icon name="heart"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="card-background-page">
+  <ion-grid>
+    <ion-row>
+      <ng-container *ngFor="let genre of genres | async">
+        <ion-col col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3>
+          <ion-card (tap)="browseGenre(genre)">
+            <img src="assets/imgs/181-thumbnail.png" />
+            <ion-card-content>
+              <ion-card-title class="card-title">{{genre.getName()}}</ion-card-title>
+              <span>{{genre.getStationsCount()}} stations</span>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ng-container>
+    </ion-row>
+  </ion-grid>
+</ion-content>

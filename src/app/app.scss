@@ -1,0 +1,88 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+page-genre-browser {
+    .header-md::after{
+        height: 0;
+    }
+    ion-header{
+        overflow: hidden;
+        background: #222222 url('../assets/imgs/listen-bg.jpg') center center no-repeat;
+        background-size: cover;
+        min-height: 280px;
+        .item-divider{
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+        }
+        
+    }
+    ion-navbar{
+        position: relative;
+        z-index: 1
+    }
+    .header-content{
+        position: absolute;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        color:rgba(#fff,.95);
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        text-align: center;
+        background-color: rgba(#222,.7)
+    }
+    .player{
+        margin-top: 16px;
+        .meta{
+            font-style: italic;
+            color: rgba(#fff,.75);
+        }
+    }
+}
+
+.col{
+    padding: 2px !important
+  }
+  
+  .card-background-page {
+        ion-card {
+          position: relative;
+          text-align: center;
+  
+          ion-card-content{
+            background-color: #fafafa
+          }
+        }
+      
+        .card-title {
+          text-align: center;
+          color: rgb(14, 47, 66);
+        }
+      
+      }
+  
+      @media only screen and (max-width: 382px){
+          .card-title {
+              font-size:14px;
+            }
+            .col{
+              padding: 2px .5px !important
+            }
+      }
