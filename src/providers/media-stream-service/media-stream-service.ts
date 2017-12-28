@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Station } from '../../app/globals/station';
-import { Media, MediaObject } from '@ionic-native/media';
+import { Media } from '@ionic-native/media';
 import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Platform } from 'ionic-angular';
 /*
   Generated class for the MediaStreamServiceProvider provider.
 
@@ -17,7 +18,7 @@ export class MediaStreamServiceProvider {
 
   private defaultStreamQuality = 'aac';
   private station: Station = null
-  private mediaFile: MediaObject
+  private mediaFile: any
   private meta:stream_meta = null
   private notPlaying:boolean = false
 
@@ -31,12 +32,28 @@ export class MediaStreamServiceProvider {
   private timeout = 0
 
 
-  constructor(private http: HttpClient, private media: Media) {
+  constructor(private http: HttpClient, private media: Media,private platform:Platform) {
     this.httpSubscriptions = new Subscription()
     this.uSubscriptions = new Subscription()
-    this.streamPause.next(this.notPlaying) 
+    this.streamPause.next(this.notPlaying)
+    this.checkPlatform()
   }
 
+  private checkPlatform(){
+    if(this.platform.is('core')||this.platform.is('mobileweb')){
+      delete this.media
+      this.mediaFile = new Audio()
+      
+      this.checkMediaFile = ()=>{
+        this.mediaFile.pause()
+        this.mediaFile.currentTime = 0
+      }
+
+      this.setStreamSource = (src:string)=>{
+        this.mediaFile.src = this.streamUrl.streamHttp+src
+      }
+    }
+  }
   pauseStream() {
     this.mediaFile.pause()
     this.notPlaying = true
@@ -47,34 +64,38 @@ export class MediaStreamServiceProvider {
     this.streamPause.next(this.notPlaying)
     this.mediaFile.play()
   }
-
+  
   getActiveStation(): Station {
     return this.station
   }
 
   changeStreamSource(station: Station) {
     this.station = station
-    if (this.mediaFile) {
-      this.mediaFile.stop()
-      this.mediaFile.release()
-      this.mediaFile = null
-    }
+    this.checkMediaFile()
     this.updateStreamMeta()
     this.notPlaying = false
     this.streamPause.next(this.notPlaying)
   }
-
+  
+  private checkMediaFile(){
+    if (this.mediaFile != undefined) {
+      this.mediaFile.stop()
+      this.mediaFile.release()
+      // this.mediaFile = null
+    }
+  }
   private updateStreamMeta() {
     let stationURL = this.defaultStreamQuality == 'mp3' ? this.station.getMP3PlaybackURL() : this.station.getAACPlaybackURL();
-
-    this.mediaFile = this.media.create(this.streamUrl.streamHttp+stationURL)
-
+    this.setStreamSource(stationURL)
     this.die()
     this.uSubscriptions.add(this.httpSubscriptions)
     this.mediaFile.play()
     this.getStationMeta(stationURL)
   }
-
+  
+  private setStreamSource(src:string){
+    this.mediaFile = this.media.create(this.streamUrl.streamHttp+src)
+  }
   private getStationMeta(station) {
     this.httpSubscriptions = this.http.get<any>(`http://stream-meta.jdevcloud.com/?id=${station}&action=stationMeta`)
       .subscribe({
@@ -122,13 +143,13 @@ export class MediaStreamServiceProvider {
     clearTimeout(this.timeout || 1)
   }
 
-  private addStreamListners(){
-    this.mediaFile.onError.subscribe(e => {
-      if (e == this.media.MEDIA_ERR_NONE_SUPPORTED) {
-        this.mediaFile = this.media.create(this.streamUrl.streamPort+this.station.getPlaybackFallbackPort())
-      }
-    })
-}
+//   private addStreamListners(){
+//     this.mediaFile.onError.subscribe(e => {
+//       if (e == this.media.MEDIA_ERR_NONE_SUPPORTED) {
+//         this.mediaFile = this.media.create(this.streamUrl.streamPort+this.station.getPlaybackFallbackPort())
+//       }
+//     })
+// }
 }
 
 export interface stream_meta {

@@ -23,6 +23,6 @@ export class HomePage implements AfterViewInit{
   }
 
   browseGenre(genre:Genre){
-    this.navCtrl.push("GenreBrowserPage",genre,{direction:'top'})
+    this.navCtrl.push("GenreBrowserPage",genre,{direction:'top',updateUrl:false})
   }
 }
