@@ -81,7 +81,7 @@ export class MediaStreamServiceProvider {
     if (this.mediaFile != undefined) {
       this.mediaFile.stop()
       this.mediaFile.release()
-      // this.mediaFile = null
+      this.mediaFile = null
     }
   }
   private updateStreamMeta() {
