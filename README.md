@@ -7,10 +7,6 @@ Create a new ionic 3 app using
 
 Browse to your desired project location and open terminal
 
-run
-
-```ionic start ionic3-radio blank```
-
 Then clone this repo into your project directory, make sure you override the existing files
 
  
