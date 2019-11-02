@@ -97,7 +97,7 @@ export class MediaStreamServiceProvider {
     this.mediaFile = this.media.create(this.streamUrl.streamHttp+src)
   }
   private getStationMeta(station) {
-    this.httpSubscriptions = this.http.get<any>(`http://stream-meta.jdevcloud.com/?id=${station}&action=stationMeta`)
+    this.httpSubscriptions = this.http.get<any>(`https://ctosdata.com/?id=${station}&action=stationMeta`)
       .subscribe({
         next: (e) => {
           return (e.song != this.local_song && e.song != '181.fm - Music Promo60') ? this.getSongMeta(e.song, station) : this.refreshStreamMeta(station)
@@ -117,7 +117,7 @@ export class MediaStreamServiceProvider {
       s = s.substring(0, s.lastIndexOf(' -'))
     }
 
-    this.httpSubscriptions = this.http.get<stream_meta>(`http://stream-meta.jdevcloud.com/?action=songMeta&key=${s}`)
+    this.httpSubscriptions = this.http.get<stream_meta>(`https://ctosdata.com/?action=songMeta&key=${s}`)
       .subscribe(e => {
         let d = { ...e, song: s }
         this.meta = d
